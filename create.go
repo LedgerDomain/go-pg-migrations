@@ -18,12 +18,21 @@ import (
 
 func init() {
 	up := func(db orm.DB) error {
-		_, err := db.Exec("")
+		_, err := db.Exec(` + "`" + `
+-- SELECT audit.disable_all_tracking();
+
+-- SELECT ensure_updated_at_trigger('public', 'mynewtable');
+-- SELECT audit.enable_all_tracking();
+` + "`" + `)
 		return err
 	}
 
 	down := func(db orm.DB) error {
-		_, err := db.Exec("")
+		_, err := db.Exec(` + "`" + `
+-- SELECT audit.disable_all_tracking();
+
+-- SELECT audit.enable_all_tracking();
+` + "`" + `)
 		return err
 	}
 
